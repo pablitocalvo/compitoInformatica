@@ -1,0 +1,52 @@
+#! /bin/bash
+set -o verbose
+set -v
+
+echo $1
+echo $2
+
+
+file=$1
+
+
+cat  $file | grep "#PAO_def" > definizioni.tmp
+
+while read riga 
+do
+	# rif http://stackoverflow.com/questions/10586153/split-string-into-an-array-in-bash
+	read -r -a array <<< "$riga"
+	
+	
+	echo "${array[0]}"
+	user="user"${array[1]}
+	mkdir $user
+	
+	cp $file $user/
+	
+	lun=${#array[@]}
+	numtoken=$(( lun / 2 ))
+	echo numtoken = $numtoken
+	for i in $(seq 2  2 "$numtoken")
+	do 
+		echo $i
+		tok_da=${array[i]} 
+		j=$(( i + 1 ))
+		
+		tok_con=${array[j]}
+		echo da $tok_da con $tok_con
+		
+	    virg=''
+	    sed  -i $virg"s/$tok_da/$tok_con/g"$virg $user/$file
+		
+		cat $user/$file | grep -v "PAO_def" > $user/$file.tmp
+		rm $user/$file
+		mv $user/$file.tmp $user/$file 
+	done
+	
+	
+	
+done < definizioni.tmp
+
+exit
+
+sed -i 's/old-word/new-word/g' *.txt

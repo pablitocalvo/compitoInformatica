@@ -1,0 +1,18 @@
+pandoc input.txt -o output.pdf
+
+
+
+
+### -B niente intestazione
+
+
+enscript --color=1 -Ecpp -B -p output.ps input.txt
+
+
+ps2pdf output.ps output.pdf
+
+convert  -flatten -background white -undercolor white -fill black -density 75 output.pdf -quality 90 output.png
+
+
+
+\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\u@\h:\w\$
